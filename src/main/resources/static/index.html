@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPD Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">🏥</div>
+                <div class="brand-text">
+                    <h2>OPD Care</h2>
+                    <span>Hospital Portal</span>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-tab="dashboard">
+                    <span class="icon">📊</span> Dashboard
+                </button>
+                <button class="nav-btn" data-tab="patients">
+                    <span class="icon">👥</span> Patients
+                </button>
+                <button class="nav-btn" data-tab="appointments">
+                    <span class="icon">📅</span> Appointments
+                </button>
+                <button class="nav-btn" data-tab="consultations">
+                    <span class="icon">📋</span> Consultations
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="status-indicator">
+                    <span class="dot online"></span> System Online
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <h1 id="page-title">Dashboard Overview</h1>
+                <div class="user-profile">
+                    <span class="avatar">👨‍⚕️</span>
+                    <span class="username">OPD Administrator</span>
+                </div>
+            </header>
+
+            <!-- Notification Banner -->
+            <div id="alert-banner" class="alert-banner hidden"></div>
+
+            <!-- TAB 1: DASHBOARD -->
+            <section id="dashboard-tab" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">👥</div>
+                        <div class="stat-info">
+                            <h3>Total Patients</h3>
+                            <p class="stat-number" id="stat-total-patients">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">📅</div>
+                        <div class="stat-info">
+                            <h3>Total Appointments</h3>
+                            <p class="stat-number" id="stat-total-appointments">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon amber">⚡</div>
+                        <div class="stat-info">
+                            <h3>Today's Appointments</h3>
+                            <p class="stat-number" id="stat-today-appointments">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">📋</div>
+                        <div class="stat-info">
+                            <h3>Completed Consultations</h3>
+                            <p class="stat-number" id="stat-total-consultations">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Today's Schedule</h3>
+                            <button class="btn btn-secondary btn-sm" onclick="switchTab('appointments')">View All</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Patient</th>
+                                            <th>Doctor</th>
+                                            <th>Time</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dash-today-table">
+                                        <tr><td colspan="5" class="empty-msg">Loading today's schedule...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Patients</h3>
+                            <button class="btn btn-secondary btn-sm" onclick="switchTab('patients')">Manage Patients</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Gender</th>
+                                            <th>Phone</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dash-patients-table">
+                                        <tr><td colspan="4" class="empty-msg">Loading patients...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: PATIENTS -->
+            <section id="patients-tab" class="tab-content">
+                <div class="layout-grid">
+                    <!-- Form Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Register New Patient</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="patient-form">
+                                <div class="form-group">
+                                    <label for="patient-name">Full Name *</label>
+                                    <input type="text" id="patient-name" placeholder="e.g. Rahul Sharma" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="patient-gender">Gender *</label>
+                                        <select id="patient-gender" required>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="patient-age">Age (0-150) *</label>
+                                        <input type="number" id="patient-age" min="0" max="150" placeholder="30" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="patient-phone">Phone Number</label>
+                                    <input type="tel" id="patient-phone" placeholder="9876543210">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block" id="patient-submit-btn">
+                                    ➕ Register Patient
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- List Card -->
+                    <div class="card flex-1">
+                        <div class="card-header space-between">
+                            <h3>Registered Patients</h3>
+                            <div class="search-box">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" id="patient-search-input" placeholder="Search by name or phone...">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Gender</th>
+                                            <th>Age</th>
+                                            <th>Phone</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="patients-table-body">
+                                        <tr><td colspan="6" class="empty-msg">Loading patient records...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: APPOINTMENTS -->
+            <section id="appointments-tab" class="tab-content">
+                <div class="layout-grid">
+                    <!-- Form Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Book Appointment</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="appointment-form">
+                                <div class="form-group">
+                                    <label for="appt-patient-select">Select Patient *</label>
+                                    <select id="appt-patient-select" required>
+                                        <option value="">-- Select Registered Patient --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="appt-doctor-name">Doctor Name *</label>
+                                    <input type="text" id="appt-doctor-name" placeholder="e.g. Dr. Shah" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="appt-datetime">Appointment Date & Time *</label>
+                                    <input type="datetime-local" id="appt-datetime" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block" id="appt-submit-btn">
+                                    📅 Confirm Booking
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- List Card -->
+                    <div class="card flex-1">
+                        <div class="card-header space-between">
+                            <h3>Appointment Directory</h3>
+                            <div class="filter-group">
+                                <button class="btn btn-sm btn-filter active" id="filter-all-btn" onclick="filterAppointments('all')">All</button>
+                                <button class="btn btn-sm btn-filter" id="filter-today-btn" onclick="filterAppointments('today')">Today Only</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Appt ID</th>
+                                            <th>Patient Name</th>
+                                            <th>Doctor</th>
+                                            <th>Date & Time</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appointments-table-body">
+                                        <tr><td colspan="5" class="empty-msg">Loading appointments...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: CONSULTATIONS -->
+            <section id="consultations-tab" class="tab-content">
+                <div class="layout-grid">
+                    <!-- Form Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Record Consultation</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="consultation-form">
+                                <div class="form-group">
+                                    <label for="consult-appt-select">Select Appointment *</label>
+                                    <select id="consult-appt-select" required>
+                                        <option value="">-- Select Active Appointment --</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="consult-bp">Blood Pressure (BP) *</label>
+                                        <input type="text" id="consult-bp" placeholder="e.g. 120/80" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="consult-temp">Temperature (°F) *</label>
+                                        <input type="number" step="0.1" id="consult-temp" placeholder="e.g. 98.6" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="consult-notes">Clinical Notes</label>
+                                    <textarea id="consult-notes" rows="3" placeholder="Diagnosis, symptoms, prescription notes..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block" id="consult-submit-btn">
+                                    📋 Complete Consultation
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- History Card -->
+                    <div class="card flex-1">
+                        <div class="card-header space-between">
+                            <h3>Patient Consultation History</h3>
+                            <div class="form-group margin-none" style="width: 240px; margin: 0;">
+                                <select id="consult-patient-filter" onchange="loadPatientConsultationHistory()">
+                                    <option value="">-- Select Patient History --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Appt ID</th>
+                                            <th>Patient</th>
+                                            <th>Doctor</th>
+                                            <th>BP</th>
+                                            <th>Temp</th>
+                                            <th>Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="consultations-table-body">
+                                        <tr><td colspan="7" class="empty-msg">Select a patient above to view history</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
