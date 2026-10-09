@@ -119,3 +119,16 @@ A simple, clean, and robust Out-Patient Department (OPD) Management System built
   "notes": "Mild fever. Prescribed Paracetamol 500mg."
 }
 ```
+## 📸 Screenshots
+
+### Game Board
+
+![ChessBoard](/public/images/chessboard.png)
+
+### Possible Move
+
+![possiblemove](/public/images/possible-move.png)
+
+### Checkmate
+
+![Checkmate](/public/images/checkmate.png)
